@@ -12,7 +12,7 @@
   <script type="text/javascript" src="javascripts/script.js"></script>
 
   <title>FirstBlog</title>
-  <meta name="description" content="blog">
+  <meta name="description" content="javax.persistence">
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
@@ -25,7 +25,7 @@
       <h1 class="title">FirstBlog</h1>
     </header>
     <div id="container">
-      <p class="tagline">blog</p>
+      <p class="tagline">javax.persistence</p>
       <div id="main" role="main">
         <div class="download-bar">
         <div class="inner">
@@ -34,37 +34,100 @@
         <span class="blc"></span><span class="trc"></span>
         </div>
         <article class="markdown-body">
-          <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+          <p>1、<a href="https://github.com/Table" class="user-mention">@Table</a>(name="T_X")这句话可以不写，不写就已类名作为表名 </p>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>2、如果想让两个类的属性生成一个数据表，在一个类里这样加入另一个类即可：  <a href="https://github.com/Embedded" class="user-mention">@Embedded</a> 
+private C c; </p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<p>3、如果想要一个类继承另一个类的所有属性，则在父类里这样写： 
+<a href="https://github.com/SuppressWarnings" class="user-mention">@SuppressWarnings</a>("serial") 
+<a href="https://github.com/Entity" class="user-mention">@Entity</a> 
+@MappedSuperclass   //增加这一行 
+并把父类的所有属性的private改为protected即可 </p>
+
+<p>4、建议在一对多关联中在"一"方用延迟加载"多"方可以在HQL中显式的"迫切左外连接" left join fetch 这样做Hibernate可以少访问数据库,也可以用"@BatchSize(size = 5)"来减少访问数据库的次数 </p>
+
+<ol>
+<li><p><a href="https://github.com/Id" class="user-mention">@Id</a> 声明属性为主键 </p></li>
+<li><p>@GeneratedValue表示主键是自动生成策略，一般该注释和 <a href="https://github.com/Id" class="user-mention">@Id</a> 一起使用 </p></li>
+<li><p><a href="https://github.com/Entity" class="user-mention">@Entity</a> 任何 hibernte 映射对象都要有次注释 </p></li>
+<li><p><a href="https://github.com/Table" class="user-mention">@Table</a>(name = “tablename”) 类声明此对象映射到哪个表 </p></li>
+<li><p><a href="https://github.com/Column" class="user-mention">@Column</a>(name = “Name”,nullable=false,length=32) 声明数据 库字段和类属性对应关系 </p></li>
+<li><p><a href="https://github.com/Lob" class="user-mention">@Lob</a> 声明字段为 Clob 或 Blob 类型 </p></li>
+<li><p><a href="https://github.com/OneToMany" class="user-mention">@OneToMany</a>(mappedBy=”order”,cascade = CascadeType.ALL, fetch = FetchType.LAZY) 
+@OrderBy(value = “id ASC”) 
+一对多声明，和 ORM 产品声明类似，一看就明白了。 
+@ManyToOne(cascade=CascadeType.REFRESH,optional=false) 
+@JoinColumn(name = “order_id”) 
+声明为双向关联 </p></li>
+<li><p><a href="https://github.com/Temporal" class="user-mention">@Temporal</a>(value=TemporalType.DATE) 做日期类型转换。 </p></li>
+<li><p><a href="https://github.com/OneToOne" class="user-mention">@OneToOne</a>(optional= true,cascade = CascadeType.ALL, mappedBy = “person”) 
+一对一关联声明 
+<a href="https://github.com/OneToOne" class="user-mention">@OneToOne</a>(optional = false, cascade = CascadeType.REFRESH) 
+@JoinColumn(name = “Person_ID”, referencedColumnName = “personid”,unique = true) 
+声明为双向关联 </p></li>
+<li><p>@ManyToMany(mappedBy= “students”) 
+多对多关联声明。 
+@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY) 
+@JoinTable(name = “Teacher_Student”, 
+  joinColumns = {@JoinColumn(name = “Teacher_ID”, referencedColumnName = “teacherid”)}, 
+  inverseJoinColumns = {@JoinColumn(name = “Student_ID”, referencedColumnName = 
+  “studentid”)}) 
+多对多关联一般都有个关联表，是这样声明的！ </p></li>
+<li><p>@Transiten表示此属性与表没有映射关系，是一个暂时的属性 </p></li>
+<li><p>@Cache(usage= CacheConcurrencyStrategy.READ_WRITE)表示此对象应用缓存 </p></li>
+</ol><p>JPA规范 
+<a href="https://github.com/Entity" class="user-mention">@Entity</a>：通过<a href="https://github.com/Entity" class="user-mention">@Entity</a>注解将一个类声明为一个实体bean </p>
+
+<p><a href="https://github.com/Table" class="user-mention">@Table</a>：通过 <a href="https://github.com/Table" class="user-mention">@Table</a>注解可以为实体bean映射指定表，name属性表示实体所对应表的名称，如果没有定义 <a href="https://github.com/Table" class="user-mention">@Table</a>，那么系统自动使用默认值：实体的类名（不带包名） </p>
+
+<p><a href="https://github.com/Id" class="user-mention">@Id</a>：用于标记属性的主键 </p>
+
+<p><a href="https://github.com/Column" class="user-mention">@Column</a>：表示持久化属性所映射表中的字段，如果属性名与表中的字段名相同，则可以省略<a href="https://github.com/Column" class="user-mention">@Column</a>注解，另外有两种方式标记，一是放在属性前，另一种是放在getter方法前，例如： </p>
+
+<p><a href="https://github.com/Column" class="user-mention">@Column</a>(name = "EMPLOYEE_NAME") </p>
+
+<p>private String employee_name; 或者 </p>
+
+<p><a href="https://github.com/Column" class="user-mention">@Column</a>(name = "EMPLOYEE_NAME") </p>
+
+<p>public String getEmployee_name() { </p>
+
+<p>return employee_name; </p>
+
+<p>} 这两种方式都是正解的，根据个人喜好来选择。大象偏向于第二种，并且喜欢将属性名与字段名设成一样的，这样可以省掉<a href="https://github.com/Column" class="user-mention">@Column</a>注解，使代码更简洁。 </p>
+
+<p><a href="https://github.com/Temporal" class="user-mention">@Temporal</a>(TemporalType.DATE)：如果属性是时间类型，因为数据表对时间类型有更严格的划分，所以必须指定具体时间类型，如④所示。在javax.persistence.TemporalType枚举中定义了3种时间类型： </p>
+
+<p>通过 <a href="https://github.com/Temporal" class="user-mention">@Temporal</a> 定义映射到数据库的时间精度： 
+<a href="https://github.com/Temporal" class="user-mention">@Temporal</a>(TemporalType.DATE)       日期 
+<a href="https://github.com/Temporal" class="user-mention">@Temporal</a>(TemporalType.TIME)       时间 
+<a href="https://github.com/Temporal" class="user-mention">@Temporal</a>(TemporalType.TIMESTAMP) 两者兼具 </p>
+
+<p><a href="https://github.com/Temporal" class="user-mention">@Temporal</a>只是起映射作为 </p>
+
+<p><a href="https://github.com/Transient" class="user-mention">@Transient</a>   </p>
+
+<p><a href="https://github.com/Target" class="user-mention">@Target</a>({METHOD, FIELD}) @Retention(RUNTIME) </p>
+
+<p>public <a href="https://github.com/interface" class="user-mention">@interface</a> Transient {} </p>
+
+<p>指明一个属性或方法不能持久化 </p>
+
+<p>@TableGenerator：表生成器，将当前主键的值单独保存到一个数据库表中，主键的值每次都是从指定的表中查询来获得，这种生成主键的方式是很常用的。这种方法生成主键的策略可以适用于任何数据库，不必担心不同数据库不兼容造成的问题。大象推荐这种方式管理主键，很方便，集中式管理表的主键，而且更换数据库不会造成很大的问题。各属性含义如下： </p>
+
+<pre><code>    name：表示该表主键生成策略的名称，这个名字可以自定义，它被引用在@GeneratedValue中设置的"generator"值中 
+
+    table：表示表生成策略所持久化的表名，说简单点就是一个管理其它表主键的表，本例中，这个表名为GENERATOR_TABLE 
+
+    pkColumnName：表生成器中的列名，用来存放其它表的主键键名，这个列名是与表中的字段对应的 
+
+    pkColumnValue：实体表所对应到生成器表中的主键名，这个键名是可以自定义滴 
+
+    valueColumnName：表生成器中的列名，实体表主键的下一个值，假设EMPLOYEE表中的EMPLOYEE_ID最大为2，那么此时，生成器表中与实体表主键对应的键名值则为3 
+
+    allocationSize：表示每次主键值增加的大小，例如设置成1，则表示每次创建新记录后自动加1，默认为50 
 </code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
         </article>
       </div>
     </div>
